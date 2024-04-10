@@ -1,0 +1,20 @@
+run = "bundle exec rackup"
+hidden = [".bundle"]
+entrypoint = "main.rb"
+modules = ["ruby-3.2:v6-20240209-9e3a339"]
+
+[nix]
+channel = "stable-23_11"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
+
+[[ports]]
+localPort = 4567
+externalPort = 3000
+exposeLocalhost = true
+
+[[ports]]
+localPort = 9292
+externalPort = 80
+exposeLocalhost = true

@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    %title Sinatra App with Tailwind CSS
+
+    %link{href: "./public/output.css", rel: "stylesheet"}
+    %link{href: "./public/css/styles.css", rel: "stylesheet"}
+    %script{src: "https://cdn.tailwindcss.com"}
+
+  %body.flex.items-center.justify-center.h-screen.bg-gray-200.bg-gradient-to-t.from-white.dark:from-slate-900
+    %div.bg-gray-100.bg-gradient-to-t.from-white.dark:from-slate-900.p-5.m-10.rounded-3xl
+      %h3.mb-10.text-center.text-black-50.font-semi-bold.text-2xl Quote of the day
+      %p.text-center #{@quote}
+      %p.mt-5.ml-7.text-gray-50.text-sm ~ #{@author}
+

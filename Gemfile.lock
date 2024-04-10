@@ -1,0 +1,137 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activemodel (7.1.3.2)
+      activesupport (= 7.1.3.2)
+    activerecord (7.1.3.2)
+      activemodel (= 7.1.3.2)
+      activesupport (= 7.1.3.2)
+      timeout (>= 0.4.0)
+    activesupport (7.1.3.2)
+      base64
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      connection_pool (>= 2.2.5)
+      drb
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      mutex_m
+      tzinfo (~> 2.0)
+    base64 (0.2.0)
+    bcrypt (3.1.20)
+    bigdecimal (3.1.7)
+    coderay (1.1.3)
+    concurrent-ruby (1.2.3)
+    connection_pool (2.4.1)
+    date (3.3.4)
+    drb (2.2.1)
+    faraday (2.9.0)
+      faraday-net_http (>= 2.0, < 3.2)
+    faraday-net_http (3.1.0)
+      net-http
+    haml (6.3.0)
+      temple (>= 0.8.2)
+      thor
+      tilt
+    i18n (1.14.4)
+      concurrent-ruby (~> 1.0)
+    mail (2.8.1)
+      mini_mime (>= 0.1.1)
+      net-imap
+      net-pop
+      net-smtp
+    method_source (1.0.0)
+    mini_mime (1.1.5)
+    minitest (5.22.3)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
+    mutex_m (0.2.0)
+    net-http (0.4.1)
+      uri
+    net-imap (0.4.10)
+      date
+      net-protocol
+    net-pop (0.1.2)
+      net-protocol
+    net-protocol (0.2.2)
+      timeout
+    net-smtp (0.5.0)
+      net-protocol
+    open-uri (0.4.1)
+      stringio
+      time
+      uri
+    pry (0.14.2)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    rack (3.0.10)
+    rack-flash3 (1.0.5)
+      rack
+    rack-protection (4.0.0)
+      base64 (>= 0.1.0)
+      rack (>= 3.0.0, < 4)
+    rack-session (2.0.0)
+      rack (>= 3.0.0)
+    rackup (2.1.0)
+      rack (>= 3)
+      webrick (~> 1.8)
+    rake (13.2.1)
+    redis-client (0.21.1)
+      connection_pool
+    require_all (3.0.0)
+    ruby2_keywords (0.0.5)
+    ruby_http_client (3.5.5)
+    sendgrid-ruby (6.7.0)
+      ruby_http_client (~> 3.4)
+    sidekiq (7.2.2)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      rack (>= 2.2.4)
+      redis-client (>= 0.19.0)
+    sinatra (4.0.0)
+      mustermann (~> 3.0)
+      rack (>= 3.0.0, < 4)
+      rack-protection (= 4.0.0)
+      rack-session (>= 2.0.0, < 3)
+      tilt (~> 2.0)
+    sinatra-activerecord (2.0.27)
+      activerecord (>= 4.1)
+      sinatra (>= 1.0)
+    sqlite3 (1.7.3-x86_64-linux)
+    stringio (3.1.0)
+    temple (0.10.3)
+    thor (1.3.1)
+    tilt (2.3.0)
+    time (0.3.0)
+      date
+    timeout (0.4.1)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
+    uri (0.13.0)
+    webrick (1.8.1)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  activerecord
+  bcrypt
+  faraday (= 2.9.0)
+  haml
+  mail (= 2.8.1)
+  net-http (= 0.4.1)
+  net-smtp (= 0.5.0)
+  open-uri (= 0.4.1)
+  pry (~> 0.14.2)
+  rack-flash3
+  rackup (~> 2.1)
+  rake (~> 13.2)
+  require_all
+  sendgrid-ruby (= 6.7.0)
+  sidekiq
+  sinatra
+  sinatra-activerecord (~> 2.0)
+  sqlite3
+
+BUNDLED WITH
+   2.4.10
