@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_07_194154) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_11_051749) do
   create_table "subscribers", force: :cascade do |t|
     t.string "email"
     t.integer "subscription_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "confirmed", default: false
     t.index ["subscription_id"], name: "index_subscribers_on_subscription_id"
   end
 

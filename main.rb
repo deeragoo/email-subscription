@@ -32,6 +32,10 @@ get '/' do
   @quote = JSON.parse(qg.get_quote).first['quote']
   @author = JSON.parse(qg.get_quote).first['author']
   content = haml :layout, layout: false, locals: { quote: @quote, author: @author }
+  subscribers = Subscriber.where(confirmed: true)
+  subscribers.each do |subscriber|
+    EmailSender.new.send_email(subscriber.email, content)
+  end
   # EmailSender.new.send_email(TO_EMAIL, content)
 end
 
@@ -40,42 +44,46 @@ get '/subscribe' do
 end
 
 post '/subscribe' do
-  
   if params[:email] && !params[:email].empty?
     email = params[:email]
-  
+
     begin
       subscription = Subscription.where(name: 'daily_quote').first
-      p subscription
-      
-      subscription = Subscription.new(name: 'daily_quote') unless subscription
-      
+      subscription ||= Subscription.create(name: 'daily_quote')
+
       subscriber = Subscriber.new(email: email)
 
-      p subscriber
-      
-      subscriber.save
+      if subscriber.save
+        subscription.subscribers << subscriber
+        subscription.save
 
-      subscription.subscribers << subscriber
+        # Send confirmation email
+        confirmation_link = "#{request.base_url}/confirm_subscription/#{subscriber.id}"
+        confirmation_content = "Thank you for subscribing! Please click <a href='#{confirmation_link}'>here</a> to confirm your subscription."
+        EmailSender.new.send_email(subscriber.email, confirmation_content)
 
-      subscription.save
-
-      
-      # Save the email to the SQLite3 database
-  
-      p "#{email} has subscribed successfully"
-  
-      # Redirect to the thank you page
-      redirect '/thank_you'
-    rescue SQLite3::Exception => e
-      # If an exception occurs during database operation, return an error response
+        "A confirmation email has been sent to #{subscriber.email}."
+      else
+        status 500
+        { error: "Failed to save subscriber: #{subscriber.errors.full_messages.join(', ')}" }.to_json
+      end
+    rescue => e
       status 500
-      { error: "Failed to insert email into the database: #{e.message}" }.to_json
+      { error: "Failed to subscribe: #{e.message}" }.to_json
     end
   else
-    # If email parameter is missing or empty, return an error response
     status 400
     { error: 'Email parameter is missing or empty' }.to_json
+  end
+end
+
+get '/confirm_subscription/:id' do |id|
+  subscriber = Subscriber.find_by(id: id)
+  if subscriber
+    subscriber.update(confirmed: true)
+    'Thank you for confirming your subscription!'
+  else
+    'Subscriber not found.'
   end
 end
 
