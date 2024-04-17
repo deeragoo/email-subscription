@@ -16,7 +16,6 @@ class QuoteGenerator
     
     if res.success?
       puts "Gathering Quote"
-      p JSON.parse(res.body).first
       return res.body
     else
       puts "Request failed with status #{res.status}: #{res.body}"

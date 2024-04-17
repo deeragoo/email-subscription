@@ -1,4 +1,4 @@
-run = "bundle exec rackup"
+run = "bundle exec foreman start -p 9292"
 hidden = [".bundle"]
 entrypoint = "main.rb"
 modules = ["ruby-3.2:v6-20240209-9e3a339"]

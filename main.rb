@@ -5,6 +5,16 @@ require 'sinatra'
 require 'haml'
 require 'sqlite3'
 require "sinatra/activerecord"
+require 'sidekiq'
+require 'redis'
+
+redis_url = 'redis://:oYbh4E5A348h7g848jesK4JpBNfnp5CP@redis-14658.c61.us-east-1-3.ec2.cloud.redislabs.com:14658/'
+Sidekiq.configure_client do |config|
+  config.redis = { url: redis_url }
+end
+Sidekiq.configure_server do |config|
+  config.redis = { url: redis_url }
+end
 register Sinatra::ActiveRecordExtension
 TO_EMAIL = ENV['TO_EMAIL']
 
@@ -31,12 +41,16 @@ get '/' do
   qg = QuoteGenerator.new
   @quote = JSON.parse(qg.get_quote).first['quote']
   @author = JSON.parse(qg.get_quote).first['author']
-  content = haml :layout, layout: false, locals: { quote: @quote, author: @author }
+
   subscribers = Subscriber.where(confirmed: true)
-  subscribers.each do |subscriber|
-    EmailSender.new.send_email(subscriber.email, content)
-  end
-  # EmailSender.new.send_email(TO_EMAIL, content)
+
+  content = haml :layout, layout: false, locals: { quote: @quote, author: @author }
+
+  subscribers = Subscriber.where(confirmed: true)
+  #subscribers.each do |subscriber|
+    #EmailSender.new.send_email(subscriber.email, content)
+  #end
+  content
 end
 
 get '/subscribe' do

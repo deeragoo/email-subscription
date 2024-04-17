@@ -26,10 +26,16 @@ GEM
     date (3.3.4)
     dotenv (3.1.0)
     drb (2.2.1)
+    et-orbi (1.2.11)
+      tzinfo
     faraday (2.9.0)
       faraday-net_http (>= 2.0, < 3.2)
     faraday-net_http (3.1.0)
       net-http
+    foreman (0.88.1)
+    fugit (1.10.1)
+      et-orbi (~> 1, >= 1.2.7)
+      raabro (~> 1.4)
     haml (6.3.0)
       temple (>= 0.8.2)
       thor
@@ -65,6 +71,7 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    raabro (1.4.0)
     rack (3.0.10)
     rack-flash3 (1.0.5)
       rack
@@ -77,11 +84,15 @@ GEM
       rack (>= 3)
       webrick (~> 1.8)
     rake (13.2.1)
-    redis-client (0.21.1)
+    redis (5.2.0)
+      redis-client (>= 0.22.0)
+    redis-client (0.22.0)
       connection_pool
     require_all (3.0.0)
     ruby2_keywords (0.0.5)
     ruby_http_client (3.5.5)
+    rufus-scheduler (3.9.1)
+      fugit (~> 1.1, >= 1.1.6)
     sendgrid-ruby (6.7.0)
       ruby_http_client (~> 3.4)
     sidekiq (7.2.2)
@@ -119,6 +130,7 @@ DEPENDENCIES
   bcrypt
   dotenv
   faraday (= 2.9.0)
+  foreman (= 0.88.1)
   haml
   mail (= 2.8.1)
   net-http (= 0.4.1)
@@ -128,7 +140,9 @@ DEPENDENCIES
   rack-flash3
   rackup (~> 2.1)
   rake (~> 13.2)
+  redis (= 5.2.0)
   require_all
+  rufus-scheduler (= 3.9.1)
   sendgrid-ruby (= 6.7.0)
   sidekiq
   sinatra

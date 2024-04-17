@@ -34,3 +34,8 @@ gem 'require_all'
 gem 'bcrypt'
 gem 'rack-flash3', require: 'rack-flash'
 gem 'dotenv'
+gem "rufus-scheduler", "= 3.9.1"
+
+gem "redis", "= 5.2.0"
+
+gem "foreman", "= 0.88.1"
