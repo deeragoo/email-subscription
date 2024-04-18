@@ -1,0 +1,3 @@
+daily_email_sender:
+  cron: "*/5 * * * *"
+  class: "EmailSenderWorker"

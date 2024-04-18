@@ -39,3 +39,5 @@ gem "rufus-scheduler", "= 3.9.1"
 gem "redis", "= 5.2.0"
 
 gem "foreman", "= 0.88.1"
+
+gem "sidekiq-cron", "= 1.12.0"

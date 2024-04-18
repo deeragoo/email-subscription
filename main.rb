@@ -7,19 +7,46 @@ require 'sqlite3'
 require "sinatra/activerecord"
 require 'sidekiq'
 require 'redis'
+require 'sidekiq-cron'
+REDIS_URL = ENV['REDIS_URL']
 
-redis_url = 'redis://:oYbh4E5A348h7g848jesK4JpBNfnp5CP@redis-14658.c61.us-east-1-3.ec2.cloud.redislabs.com:14658/'
+redis_url = REDIS_URL
 Sidekiq.configure_client do |config|
   config.redis = { url: redis_url }
 end
 Sidekiq.configure_server do |config|
   config.redis = { url: redis_url }
+  config.on(:startup) do
+    schedule_file = 'config/sidekiq_schedule.yml'
+    file = YAML.load_file(schedule_file)
+    Sidekiq::Cron::Job.load_from_hash!(file, source: "schedule")
+  end
 end
 register Sinatra::ActiveRecordExtension
 TO_EMAIL = ENV['TO_EMAIL']
 
 set :haml, format: :html5, escape_html: true
 set :database, {adapter: "sqlite3", database: "devlopment_subscriptions.sqlite3"}
+
+class EmailSenderWorker
+  include Sidekiq::Worker
+
+  def perform
+    name = 'daddy dee'
+    puts "Hello, #{name}!"
+  end
+
+  #def perform
+  #  subscribers = Subscriber.where(confirmed: true)
+   # qg = QuoteGenerator.new
+  #  quote = JSON.parse(qg.get_quote).first['quote']
+ #   author = JSON.parse(qg.get_quote).first['author']
+
+ #   subscribers.each do |subscriber|
+    #  content = haml :layout, layout: false, locals: { quote: quote, author: author }
+      #EmailSender.new.send_email(subscriber.email, content)
+   # end
+end
 
 class User < ActiveRecord::Base
   validates_presence_of :email
@@ -103,4 +130,8 @@ end
 
 get '/thank_you' do
   'Thank you for Subscribing'
+end
+
+post '/enqueue_email' do
+  "enqueue started for #{name}"
 end
