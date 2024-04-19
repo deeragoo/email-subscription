@@ -19,7 +19,7 @@ Sidekiq.configure_server do |config|
   config.on(:startup) do
     schedule_file = 'config/sidekiq_schedule.yml'
     file = YAML.load_file(schedule_file)
-    Sidekiq::Cron::Job.load_from_hash!(file, source: "schedule")
+    Sidekiq::Cron::Job.load_from_hash!(file, source: "dynamic")
   end
 end
 register Sinatra::ActiveRecordExtension
@@ -32,25 +32,28 @@ class EmailSenderWorker
   include Sidekiq::Worker
 
   def perform
-    name = 'daddy dee'
-    puts "Hello, #{name}!"
+    subscribers = Subscriber.where(confirmed: true)
+    quotes = Quote.all
+    index = rand(quotes.length)
+    q = quotes[index]
+    quote = q.desc
+    author = q.author
+    content = "Quote: #{quote}\nAuthor: #{author}"
+
+    subscribers.each do |subscriber|
+      EmailSender.new.send_email(subscriber.email, content)
+    end
   end
-
-  #def perform
-  #  subscribers = Subscriber.where(confirmed: true)
-   # qg = QuoteGenerator.new
-  #  quote = JSON.parse(qg.get_quote).first['quote']
- #   author = JSON.parse(qg.get_quote).first['author']
-
- #   subscribers.each do |subscriber|
-    #  content = haml :layout, layout: false, locals: { quote: quote, author: author }
-      #EmailSender.new.send_email(subscriber.email, content)
-   # end
 end
 
 class User < ActiveRecord::Base
   validates_presence_of :email
   validates_presence_of :password
+end
+
+class Quote < ActiveRecord::Base
+  validates_presence_of :desc
+  validates_presence_of :author
 end
 
 class Subscriber < ActiveRecord::Base
@@ -66,8 +69,10 @@ end
 
 get '/' do
   qg = QuoteGenerator.new
-  @quote = JSON.parse(qg.get_quote).first['quote']
-  @author = JSON.parse(qg.get_quote).first['author']
+  quote_json = JSON.parse(qg.get_quote).first
+  @quote = quote_json['quote']
+  @author = quote_json['author']
+  Quote.create(desc: @quote, author: @author)
 
   subscribers = Subscriber.where(confirmed: true)
 

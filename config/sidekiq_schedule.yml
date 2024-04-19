@@ -1,3 +1,4 @@
-daily_email_sender:
+email_sender:
   cron: "*/5 * * * *"
   class: "EmailSenderWorker"
+  queue: "email_queue"
